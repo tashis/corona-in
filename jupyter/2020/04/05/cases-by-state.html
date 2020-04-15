@@ -152,155 +152,6 @@ window.onload = wrap_img;
     
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">draw_plot_alt</span><span class="p">(</span><span class="n">graph_df</span><span class="p">,</span><span class="n">num_days</span><span class="p">,</span><span class="n">title</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
-    <span class="n">wb_df</span><span class="o">=</span><span class="n">graph_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"detected_state == '</span><span class="si">{0}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="n">wb_df</span><span class="o">=</span><span class="n">wb_df</span><span class="p">[[</span><span class="s2">"diagnosed_date"</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">wb_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'Cases'</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">wb_df</span><span class="o">=</span><span class="n">wb_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"diagnosed_date"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="c1">#wb_df</span>
-    <span class="n">base</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">wb_df</span><span class="p">)</span><span class="o">.</span><span class="n">mark_bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'firebrick'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-        <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">'diagnosed_date'</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">),</span>
-        <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">'sum(Cases)'</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Cases'</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="n">text</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">mark_text</span><span class="p">(</span>
-        <span class="n">align</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span>
-        <span class="n">baseline</span><span class="o">=</span><span class="s1">'middle'</span><span class="p">,</span>
-        <span class="n">dx</span><span class="o">=</span><span class="mi">3</span>  <span class="c1"># Nudges text to right so it doesn't appear on top of the bar</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-        <span class="n">text</span><span class="o">=</span><span class="s1">'Cases:Q'</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">base</span><span class="p">,</span> <span class="n">text</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">draw_plot</span><span class="p">(</span><span class="n">graph_df</span><span class="p">,</span><span class="n">num_days</span><span class="p">,</span><span class="n">title</span><span class="p">):</span>
-    <span class="n">wb_df</span><span class="o">=</span><span class="n">graph_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"detected_state == '</span><span class="si">{0}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="n">wb_df</span><span class="o">=</span><span class="n">wb_df</span><span class="p">[[</span><span class="s2">"diagnosed_date"</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">wb_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">wb_df</span><span class="p">[</span><span class="s1">'diagnosed_date'</span><span class="p">])</span>
-    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">num_days</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dt</span><span class="p">:</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()]</span>
-    <span class="n">p1</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'diagnosed_date'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'diagnosed_date'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Number of Cases'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="k">return</span>
-    
-
-<span class="k">def</span> <span class="nf">get_states</span><span class="p">():</span>
-    <span class="n">states</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"Andhra Pradesh"</span><span class="p">,</span>
-    <span class="s2">"Arunachal Pradesh"</span><span class="p">,</span>
-    <span class="s2">"Assam"</span><span class="p">,</span>
-    <span class="s2">"Bihar"</span><span class="p">,</span>
-    <span class="s2">"Chhattisgarh"</span><span class="p">,</span>
-    <span class="s2">"Goa"</span><span class="p">,</span>
-    <span class="s2">"Gujarat"</span><span class="p">,</span>
-    <span class="s2">"Haryana"</span><span class="p">,</span>
-    <span class="s2">"Himachal Pradesh"</span><span class="p">,</span>
-    <span class="s2">"Jharkhand"</span><span class="p">,</span>
-    <span class="s2">"Karnataka"</span><span class="p">,</span>
-    <span class="s2">"Kerala"</span><span class="p">,</span>
-    <span class="s2">"Madhya Pradesh"</span><span class="p">,</span>
-    <span class="s2">"Maharashtra"</span><span class="p">,</span>
-    <span class="s2">"Manipur"</span><span class="p">,</span>
-    <span class="s2">"Meghalaya"</span><span class="p">,</span>
-    <span class="s2">"Mizoram"</span><span class="p">,</span>
-    <span class="s2">"Nagaland"</span><span class="p">,</span>
-    <span class="s2">"Odisha"</span><span class="p">,</span>
-    <span class="s2">"Punjab"</span><span class="p">,</span>
-    <span class="s2">"Rajasthan"</span><span class="p">,</span>
-    <span class="s2">"Sikkim"</span><span class="p">,</span>
-    <span class="s2">"Tamil Nadu"</span><span class="p">,</span>
-    <span class="s2">"Telangana"</span><span class="p">,</span>
-    <span class="s2">"Tripura"</span><span class="p">,</span>
-    <span class="s2">"Uttarakhand"</span><span class="p">,</span>
-    <span class="s2">"Uttar Pradesh"</span><span class="p">,</span>
-    <span class="s2">"West Bengal"</span><span class="p">,</span>
-    <span class="s2">"Andaman and Nicobar Islands"</span><span class="p">,</span>
-    <span class="s2">"Chandigarh"</span><span class="p">,</span>
-    <span class="s2">"Dadra and Nagar Haveli and Daman &amp; Diu"</span><span class="p">,</span>
-    <span class="s2">"The Government of NCT of Delhi"</span><span class="p">,</span>
-    <span class="s2">"Jammu &amp; Kashmir"</span><span class="p">,</span>
-    <span class="s2">"Ladakh"</span><span class="p">,</span>
-    <span class="s2">"Lakshadweep"</span><span class="p">,</span>
-    <span class="s2">"Puducherry"</span>
-    <span class="p">]</span>
-    <span class="k">return</span> <span class="n">states</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="c1">#import numpy as np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/tashis/corona-in/master/IndividualDetails.csv'</span><span class="p">)</span>
-<span class="n">states_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">cols_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"diagnosed_date"</span><span class="p">,</span> <span class="s2">"detected_state"</span><span class="p">,</span> <span class="s2">"current_status"</span><span class="p">]</span>
-<span class="n">states_red_df</span> <span class="o">=</span> <span class="n">states_df</span><span class="p">[</span><span class="n">cols_keep</span><span class="p">]</span>
-<span class="n">states_red_df</span><span class="p">[</span><span class="s1">'diagnosed_date'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">states_red_df</span><span class="p">[</span><span class="s2">"diagnosed_date"</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%d</span><span class="s2">/%m/%Y"</span><span class="p">)</span>
-<span class="c1">#states_red_df["diagnosed_date"] = pd.to_datetime(states_red_df["diagnosed_date"], format="%d/%m/%Y")</span>
-<span class="c1">#df_cases_total = states_red_df.groupby(["detected_state","current_status"])[states_red_df['diagnosed_date']].size().to_frame().reset_index()</span>
-<span class="n">df_cases_total</span> <span class="o">=</span> <span class="n">states_red_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"detected_state"</span><span class="p">,</span><span class="s2">"current_status"</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">x</span><span class="o">=</span><span class="n">df_cases_total</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">'current_status=="Hospitalized"'</span><span class="p">)</span>
-<span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">x</span><span class="o">.</span><span class="n">columns</span>
-<span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">[[</span><span class="s1">'detected_state'</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
-<span class="n">y</span><span class="o">=</span><span class="n">df_cases_total</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'detected_state'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">y</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'Cases'</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">z</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'detected_state'</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'detected_state'</span><span class="p">))</span>
-<span class="n">z</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'Hospitalized'</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">z</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'detected_state'</span><span class="p">:</span><span class="s1">'State'</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">graph_df</span><span class="o">=</span><span class="n">states_red_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"detected_state"</span><span class="p">,</span><span class="s2">"diagnosed_date"</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>        
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/anandsundaram/opt/anaconda3/lib/python3.7/site-packages/ipykernel_launcher.py:64: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    
-
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -310,12 +161,12 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
-<div id="altair-viz-7c1fc6943d7e413fb74ed49ba636bd67"></div>
+<div id="altair-viz-853486b4b2c544069827a9cf77004320"></div>
 <script type="text/javascript">
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-7c1fc6943d7e413fb74ed49ba636bd67") {
-      outputDiv = document.getElementById("altair-viz-7c1fc6943d7e413fb74ed49ba636bd67");
+    if (outputDiv.id !== "altair-viz-853486b4b2c544069827a9cf77004320") {
+      outputDiv = document.getElementById("altair-viz-853486b4b2c544069827a9cf77004320");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -372,23 +223,6 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
     
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
-
-<span class="n">states</span> <span class="o">=</span> <span class="n">get_states</span><span class="p">()</span>
-<span class="n">charts</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
-    <span class="n">base</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">draw_plot_alt</span><span class="p">(</span><span class="n">graph_df</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="n">st</span><span class="p">)</span>
-    <span class="n">charts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span> <span class="o">+</span> <span class="n">base</span><span class="o">.</span><span class="n">mark_point</span><span class="p">()</span> <span class="o">+</span> <span class="n">text</span><span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">900</span><span class="p">)</span> <span class="o">+</span> <span class="n">text</span><span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">))</span>
-<span class="n">alt</span><span class="o">.</span><span class="n">vconcat</span><span class="p">(</span><span class="o">*</span><span class="n">charts</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -398,12 +232,12 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
-<div id="altair-viz-0c926b5218f345ed8fb85c0cc663951b"></div>
+<div id="altair-viz-7e59a7bdb0ba4e6c9862fbf1145584de"></div>
 <script type="text/javascript">
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-0c926b5218f345ed8fb85c0cc663951b") {
-      outputDiv = document.getElementById("altair-viz-0c926b5218f345ed8fb85c0cc663951b");
+    if (outputDiv.id !== "altair-viz-7e59a7bdb0ba4e6c9862fbf1145584de") {
+      outputDiv = document.getElementById("altair-viz-7e59a7bdb0ba4e6c9862fbf1145584de");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
